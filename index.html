@@ -24,7 +24,7 @@
         <div class="col-xs-12">
           <h1>Deflategate Calculator</h1>
 
-          <p>Just for fun built this after being endlessly amused by <a href="https://twitter.com/hashtag/deflategate">#deflategate</a> and inspired by the mini dustup over Neil deGrasse Tyson's <a href="https://twitter.com/neiltyson/status/559814692936237057">tweet</a> and <a href="https://www.facebook.com/notes/neil-degrasse-tyson/deflategate/10153074004496613">correction</a>.</p>
+          <p class="lead">I built this after being endlessly amused by <a href="https://twitter.com/hashtag/deflategate">#deflategate</a> and inspired by the mini dustup over Neil deGrasse Tyson's <a href="https://twitter.com/neiltyson/status/559814692936237057">tweet</a> and <a href="https://www.facebook.com/notes/neil-degrasse-tyson/deflategate/10153074004496613">correction</a>.</p>
           
           <div ng-form="calcForm" class="form-horizontal">
             <div class="form-group" ng-class="{'has-error': !calcForm.p1.$valid}">
@@ -35,7 +35,7 @@
             </div>
             
             <div class="form-group" ng-class="{'has-error': !calcForm.t2.$valid}">
-              <label for="t2" class="control-label col-xs-12 col-sm-4 col-md-4">Measurement Temp (F):</label>
+              <label for="t2" class="control-label col-xs-12 col-sm-4 col-md-4">Measurement Temp (&deg;F):</label>
               <div class="col-xs-12 col-sm-2 col-md-2">
                 <input id="t2" name="t2" type="number" ng-model="t2" class="form-control" min="30" max="85" ng-change="changed = 1" ng-maxlength="4">
               </div>
@@ -47,15 +47,38 @@
                 <input id="dp" name="dp" type="number" ng-model="dp" class="form-control" min="0" max="3" ng-change="changed = 1" ng-maxlength="3">
               </div>
             </div>
+
+            <div class="form-group">
+              <div class="col-xs-12 col-sm-2 col-md-2 col-sm-offset-4 col-md-offset-4">
+                <button class="btn btn-default" ng-click="reset()" ng-disabled="!changed">Reset</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="word-problem">
+            <h2>Word Problem</h2>
+            <div class="well">
+              <p>An equipment manager pumps up a football and a referee checks its pressure using a standard gauge before the big game. The referee finds the pressure of the ball to be <span ng-bind="p1"></span> psi, which is within the specification of 12.5 to 13.5 psi. Later the pressure in the ball is measured with the same gauge and is found to be <span ng-bind="dp"></span> psi below the minimum specification. At the time of the second pressure measurement the temperature is known to be <span ng-bind="t2"></span> &deg;F. For both pressure measurements the atmospheric pressure is 14.7 psi. Given that the volume of the ball is constant and that no air was removed or leaked from the ball, determine the initial temperature in &deg;F of the air in the ball.</p>
+              <p>Note: 0 &deg;R = - 459.67 &deg;F</p>
+            </div>
           </div>
 
           <div class="output">
-              <h2>Change in Gauge pressure: <span ng-show="calcForm.$valid"><span ng-bind="pChange()['gauge']"></span> %</span></h2>
-              <h2>Change in Absolute pressure: <span ng-show="calcForm.$valid"><span ng-bind="pChange()['abs']"></span> %</span></h2>
-              <h2>Implied initial Temperature of air in ball: <span ng-show="calcForm.$valid"><span ng-bind="t1()"></span> F</span></h2>
+            <h2>Answer</h2>
+            <div class="well">
+              <p>Change in Gauge pressure: <span ng-show="calcForm.$valid"><span ng-bind="pChange()['gauge']"></span> %</span></p>
+              <p>Change in Absolute pressure: <span ng-show="calcForm.$valid"><span ng-bind="pChange()['abs']"></span> %</span></p>
+              <p>Implied initial Temperature of air in ball: <span ng-show="calcForm.$valid"><span ng-bind="t1()"></span> &deg;F</span></p>
+            </div>
           </div>
 
-          <button class="btn btn-default" ng-click="reset()" ng-show="changed == 1">Reset</button>
+          <div>
+            <ul class="list-unstyled list-inline text-center">
+              <li>&copy;<span ng-bind="copyYear | format : date : yyyy">2015</span> <a href="http://teeehn.com">Thomas Nicolosi</a></li>
+              <li><a href="https://github.com/teeehn/deflategate">code</a></li>
+            </ul>
+            
+          </div>
           
         </div>
       </div>

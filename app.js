@@ -40,4 +40,6 @@ app.controller("calc", ['$scope', function($scope){
     return {"gauge": dpg,"abs":dpa};
   };
 
+  $scope.copyYear = new Date();
+
 }]);
