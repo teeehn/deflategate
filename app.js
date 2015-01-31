@@ -35,11 +35,10 @@ app.controller("calc", ['$scope', function($scope){
   $scope.pChange = function(){
     var pf = 12.5 - parseFloat($scope.dp),
         p1 = parseFloat($scope.p1),
-        dpg = Math.round(100*(p1 - pf)/p1),
-        dpa = Math.round(100*(p1 - pf)/(p1 + 14.7));
+        dpg = (Math.round(10*100*(p1 - pf)/p1))/10,
+        dpa = (Math.round(10*100*(p1 - pf)/(p1 + 14.7)))/10;
     return {"gauge": dpg,"abs":dpa};
   };
 
-  $scope.copyYear = new Date();
 
 }]);
