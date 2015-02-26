@@ -11,6 +11,9 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 
+    <!-- jQuery UI -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -34,6 +37,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
     -->
+    <style>
+      .settingRow { padding: 15px 0;}
+      @media (min-width: 768px) {
+        .sliderText {
+          text-align: right;
+        }
+      }
+    </style>
   </head>
   <body ng-app="calcApp">
     <div class="container" ng-controller="calc">
@@ -43,31 +54,37 @@
 
           <p class="lead">I built this after being endlessly amused by <a href="https://twitter.com/hashtag/deflategate">#deflategate</a> and inspired by the mini dustup over Neil deGrasse Tyson's <a href="https://twitter.com/neiltyson/status/559814692936237057">tweet</a> and <a href="https://www.facebook.com/notes/neil-degrasse-tyson/deflategate/10153074004496613">correction</a>.</p>
           
-          <div ng-form="calcForm" class="form-horizontal">
-            <div class="form-group" ng-class="{'has-error': !calcForm.p1.$valid}">
-              <label for="p1" class="control-label col-xs-12 col-sm-4 col-md-4">Starting Gauge Pressure (psi):</label>
-              <div class="col-xs-12 col-sm-2 col-md-2">
-                <input id="p1" name="p1" type="number" ng-model="p1" class="form-control" min="12.5" max="13.5" ng-change="changed = 1" ng-maxlength="4">
+          <div class="well clearfix">
+            <div class="row settingRow">
+              <div class="col-xs-12 col-sm-6 col-md-6">
+                <p class="sliderText"><strong>Starting Gauge Pressure (psi):</strong> <span ng-bind="p1 | number:1"></span></p>
               </div>
-            </div>
-            
-            <div class="form-group" ng-class="{'has-error': !calcForm.t2.$valid}">
-              <label for="t2" class="control-label col-xs-12 col-sm-4 col-md-4">Measurement Temp (&deg;F):</label>
-              <div class="col-xs-12 col-sm-2 col-md-2">
-                <input id="t2" name="t2" type="number" ng-model="t2" class="form-control" min="30" max="85" ng-change="changed = 1" ng-maxlength="4">
+              <div class="col-xs-12 col-sm-4 col-md-4">
+                <div slider min="12" max="13.5" start="pStart" slide-val="p1" reset="resetP"></div>
               </div>
             </div>
 
-            <div class="form-group" ng-class="{'has-error': !calcForm.dp.$valid}">
-              <label for="dp" class="control-label col-xs-12 col-sm-4 col-md-4">Gauge Pressure below Spec of 12.5 (psi):</label>
-              <div class="col-xs-12 col-sm-2 col-md-2">
-                <input id="dp" name="dp" type="number" ng-model="dp" class="form-control" min="0" max="3" ng-change="changed = 1" ng-maxlength="3">
+            <div class="row settingRow">
+              <div class="col-xs-12 col-sm-6 col-md-6">
+                <p class="sliderText"><strong>Measurement Temp (&deg;F):</strong> <span ng-bind="t2 | number:1"></span></p>
+              </div>
+              <div class="col-xs-12 col-sm-4 col-md-4">
+                <div slider min="30" max="85" start="tStart" slide-val="t2" reset="resetT"></div>
+              </div>
+            </div>
+
+            <div class="row settingRow">
+              <div class="col-xs-12 col-sm-6 col-md-6">
+                <p class="sliderText"><strong>Gauge Pressure below Spec of 12.5 (psi):</strong> <span ng-bind="dp | number:1"></span></p>
+              </div>    
+              <div class="col-xs-12 col-sm-4 col-md-4">
+                <div slider min="0" max="3" start="dpStart" slide-val="dp" reset="resetDp"></div>
               </div>
             </div>
 
             <div class="form-group">
-              <div class="col-xs-12 col-sm-2 col-md-2 col-sm-offset-4 col-md-offset-4">
-                <button class="btn btn-default" ng-click="reset()" ng-disabled="!changed">Reset</button>
+              <div class="col-xs-12 col-sm-2 col-md-2 col-sm-offset-6 col-md-offset-6">
+                <button class="btn btn-default" ng-click="resetSliders()">Reset</button>
               </div>
             </div>
           </div>
@@ -83,9 +100,9 @@
           <div class="output">
             <h2>Answer</h2>
             <div class="well">
-              <p>Change in Gauge pressure: <span ng-show="calcForm.$valid"><span ng-bind="pChange()['gauge']"></span> %</span></p>
-              <p>Change in Absolute pressure: <span ng-show="calcForm.$valid"><span ng-bind="pChange()['abs']"></span> %</span></p>
-              <p>Implied initial Temperature of air in ball: <span ng-show="calcForm.$valid"><span ng-bind="t1()"></span> &deg;F</span></p>
+              <p>Change in Gauge pressure: <span ng-bind="pChange()['gauge']"></span> %</p>
+              <p>Change in Absolute pressure: <span ng-bind="pChange()['abs']"></span> %</p>
+              <p>Implied initial Temperature of air in ball: <span ng-bind="t1()"></span> &deg;F</p>
             </div>
           </div>
 
@@ -105,6 +122,8 @@
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- jQuery UI -->
+    <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
